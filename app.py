@@ -123,14 +123,30 @@ if st.session_state.eval_running:
     with st.spinner("Running model evaluation..."):
         if dataset_choice == "HTRU2":
             try:
-                data = pd.read_csv("HTRU_2.csv", header=None)
-                X = data.iloc[:, 0:8].values
-                y = data.iloc[:, 8].values
-                y = np.where(y == 0, -1, 1)
-                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-                scaler = StandardScaler()
-                X_train = scaler.fit_transform(X_train)
-                X_test = scaler.transform(X_test)
+                try:
+                    data = pd.read_csv("HTRU_2.csv", header=None)
+                except Exception as e:
+                    print("Chyba pri načítaní HTRU_2.csv:", e)
+                    return
+                X_htru = data.iloc[:, 0:8].values
+                y_htru = data.iloc[:, 8].values
+                # Transformácia tried: 0 -> -1 a 1 -> 1 pre binárne SVM
+                y_htru = np.where(y_htru == 0, -1, 1)
+                pos_indices = np.where(y_htru == 1)[0]
+                neg_indices = np.where(y_htru == -1)[0]
+                n_sample_per_class = 100
+                if len(pos_indices) < n_sample_per_class or len(neg_indices) < n_sample_per_class:
+                    print("Dataset nemá dosť vzoriek pre vyvážený výber.")
+                    return
+                selected_pos = np.random.choice(pos_indices, n_sample_per_class, replace=False)
+                selected_neg = np.random.choice(neg_indices, n_sample_per_class, replace=False)
+                selected_indices = np.concatenate([selected_pos, selected_neg])
+                X_htru = X_htru[selected_indices]
+                y_htru = y_htru[selected_indices]
+                X_train_htru, X_test_htru, y_train_htru, y_test_htru = train_test_split(X_htru, y_htru, test_size=0.2, random_state=42)
+                scaler_htru = StandardScaler()
+                X_train_htru = scaler_htru.fit_transform(X_train_htru)
+                X_test_htru = scaler_htru.transform(X_test_htru)
                 
                 model = SVM(kernel=kernel_choice, C=1, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5, degree=3)
                 model.fit(X_train, y_train)
