@@ -23,50 +23,77 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs, make_moons
-from commented_final import SVM, plot_decision_regions  # your module and plotting function
+from commented_final import SVM  # your custom SVM implementation
 
-# Page title
+# --- Custom Visualization Function ---
+def visualize_decision_regions(model, X, y, title="Decision Regions"):
+    """
+    Generates a decision region plot in 2D.
+    Assumes X has 2 features.
+    """
+    # Define bounds of the plot
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200),
+                         np.linspace(y_min, y_max, 200))
+    
+    # Flatten grid and predict decision function values for each point
+    grid_points = np.c_[xx.ravel(), yy.ravel()]
+    # For each grid point, use the model's decision_function:
+    Z = np.array([model.decision_function(point) for point in grid_points])
+    Z = Z.reshape(xx.shape)
+    
+    # Create a figure and plot contours and data points
+    plt.figure()
+    # Fill contours: areas where the decision function is <0 or >0
+    plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.3, cmap="coolwarm")
+    # Draw the decision boundary (where decision_function == 0)
+    plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
+    # Overlay the training points
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap="coolwarm", edgecolor="k", s=30)
+    plt.title(title)
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+    plt.tight_layout()
+    return plt.gcf()
+
+# --- Streamlit App: Blobs and Moons Visualization ---
 st.title("Visualization of Blobs and Moons")
 
-# Sidebar selections for dataset and kernel
+# Select dataset and kernel from sidebar
 dataset_option = st.selectbox("Choose a dataset", ["Blobs", "Moons"])
 kernel_option = st.selectbox("Choose a kernel", ["linear", "rbf"])
 
-# Initialize session state variable if not already set
-if 'vis_running' not in st.session_state:
+# Initialize session state flag if not already set
+if "vis_running" not in st.session_state:
     st.session_state.vis_running = False
 
-# Create the Start button; disable it if processing is running
+# Create a Start button that is disabled if processing is running
 if st.button("Start Visualization", disabled=st.session_state.vis_running):
-    # Set running flag to True so the button becomes disabled on the next rerun
     st.session_state.vis_running = True
 
-# Check the flag and, if set, run the visualization code
+# If the visualization process is running, generate the plot
 if st.session_state.vis_running:
     with st.spinner("Generating visualization..."):
         # Generate the selected dataset
         if dataset_option == "Blobs":
-            X, y = make_blobs(n_samples=30, centers=2, cluster_std=1.0, random_state=42)
-            y = np.where(y == 0, -1, 1)  # Convert labels to -1 and 1 for SVM
-        else:
-            X, y = make_moons(n_samples=30, noise=0.2, random_state=42)
+            X, y = make_blobs(n_samples=300, centers=2, cluster_std=1.0, random_state=42)
+            # Convert labels: ensure values are -1 and 1 for SVM compatibility
             y = np.where(y == 0, -1, 1)
-    
-        # Train the SVM model using the selected kernel
+        else:  # Moons dataset
+            X, y = make_moons(n_samples=300, noise=0.2, random_state=42)
+            y = np.where(y == 0, -1, 1)
+        
+        # Train the SVM model with the chosen kernel
         model = SVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
         model.fit(X, y)
-    
-        # Create a Matplotlib figure using your plotting function.
-        fig, ax = plt.subplots()
-        # Ensure your plot_decision_regions function is adapted so it does NOT call plt.show()
-        plot_decision_regions(model, X, y, title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
-    
-        # Display the figure in Streamlit
+        
+        # Create a Matplotlib figure using the custom visualization function
+        fig = visualize_decision_regions(model, X, y, 
+                title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
         st.pyplot(fig)
-    
-    # Notify the user the process is complete
     st.success("Visualization complete!")
-    # Reset the running flag to re-enable the button in the next run.
+    # Reset the flag so that the button is clickable again.
     st.session_state.vis_running = False
 
 
