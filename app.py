@@ -1,19 +1,4 @@
 import streamlit as st
-from PIL import Image
-
-# Pridanie transparentného obrázka na pozadie cez CSS
-page_bg_img = """
-<style>
-.stApp {
-    background-image: url("https://i.imgur.com/XYZabc.png"); /* Sem vlož URL tvojho transparentného obrázka */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.9;
-}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Define the pages
 pages = {
