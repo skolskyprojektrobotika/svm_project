@@ -123,11 +123,7 @@ if st.session_state.eval_running:
     with st.spinner("Running model evaluation..."):
         if dataset_choice == "HTRU2":
             try:
-                try:
-                    data = pd.read_csv("HTRU_2.csv", header=None)
-                except Exception as e:
-                    print("Chyba pri načítaní HTRU_2.csv:", e)
-                    return
+                data = pd.read_csv("HTRU_2.csv", header=None)
                 X_htru = data.iloc[:, 0:8].values
                 y_htru = data.iloc[:, 8].values
                 # Transformácia tried: 0 -> -1 a 1 -> 1 pre binárne SVM
