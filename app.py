@@ -167,7 +167,7 @@ from commented_final import SVM, MultiClassSVM  # Import your SVM classes only
 if selected_page == "Testovanie modelov":
     st.title("Testovanie modelov")
     st.markdown("""
-    V tejto časti sa testuje a vyhodnocuje SVM (alebo MultiClassSVM) model použitím reálnych datasetov, ako je HTRU2 alebo Wheat Seeds. Tieto datasety boli taktiež použité pri vyprcovaní hlavného zadania. 
+    V tejto časti sa testuje a vyhodnocuje SVM (alebo MultiClassSVM) model použitím reálnych datasetov, ako je HTRU2 alebo Wheat Seeds. Tieto datasety boli taktiež použité pri vypracovaní hlavného zadania. 
     - **Spracovanie dát:** Dataset je načítaný, normalizovaný a rozdelený na trénovaciu a testovaciu množinu.  
     - **Tréning modelu:** Na základe vybraného kernelu sa trénuje model na trénovacích dátach.  
     - **Hodnotenie:** Po trénovaní sa model testuje na testovacej množine, pričom sa počítajú metriky ako accuracy, precision, recall a F1 skóre.  
@@ -389,7 +389,7 @@ if selected_page == "Testovanie modelov":
 if selected_page == "Informácie o datasetoch":
     st.header("Informácie o datasetoch")
     st.markdown("""
-    Dataset, ktorý používame, pochádza zo štúdie [HTRU2](https://archive.ics.uci.edu/ml/datasets/HTRU2), ktorá analyzuje signály pulsarov získavané z rádiových prenosov. Tento dataset obsahuje rôzne atribúty, napríklad štatistické veličiny signálu, a cieľová premenná je binárna – určuje, či ide o pulsar, alebo nie. Dáta zo štúdie HTRU2 boli využité na detekciu pulsarov a poskytujú zaujímavý základ pre experimentovanie s klasifikáciou pomocou SVM, najmä pre demonštráciu oddelenia dvoch tried pomocou rôznych jadrových funkcií.
+    Dataset, ktorý používame, pochádza zo štúdie [HTRU2](https://archive.ics.uci.edu/ml/datasets/HTRU2), ktorá analyzuje signály pulsarov získavané z rádiových prenosov. Tento dataset obsahuje rôzne atribúty, napríklad štatistické veličiny signálu, a cieľová premenná je binárna – určuje, či ide o pulsar, alebo nie. Dáta zo štúdie HTRU2 boli využité na detekciu pulsarov a poskytujú zaujímavý základ pre experimentovanie s klasifikáciou pomocou SVM, najmä pre demonštráciu oddelenia dvoch tried pomocou rôznych kernelových funkcií.
     Pre multi-klasifikáciu môžete použiť aj dataset [Wheat Seeds](https://archive.ics.uci.edu/ml/datasets/seeds), ktorý obsahuje údaje o troch rôznych typoch semien pšenice. Tento dataset zahŕňa geometrické a štrukturálne vlastnosti semien, ktoré umožňujú rozlíšiť medzi jednotlivými odrodami. Vďaka viackategóriovému charakteru je ideálny pre demonštráciu, ako modely zvládajú úlohy s viacerými triedami a vizualizáciu rozhodovacích hraníc medzi tromi zaujímavými skupinami.
     Oba datasety ponúkajú atraktívny základ pre experimenty v oblasti strojového učenia, umožňujú porovnanie výkonnosti algoritmov na binárnych aj viackategóriových úlohách a prispievajú k lepšiemu pochopeniu fungovania SVM modelov.
     """)
