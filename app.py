@@ -12,12 +12,16 @@ pages = {
 selected_page = st.sidebar.radio("Navigation", list(pages.keys()))
 
 if selected_page == "Menu":
-    st.title("SVM Application Demo")
+    st.title("SVM Aplikácia Demo")
     st.markdown("""
     **Overview:**  
-    This app demonstrates a custom Support Vector Machine (SVM) implementation using the SMO algorithm.  
-    - Use the **Blobs and Moons Visualization** to see how different kernels separate data.  
-    - Use **Model Evaluation** to select a kernel and dataset, view performance metrics, and see the confusion matrix.  
+    **Prehľad:**  
+    Táto aplikácia demonštruje vlastnú implementáciu algoritmu Support Vector Machine (SVM) využívajúcu SMO (Sequential Minimal Optimization) pre optimalizáciu modelu. Cieľom je poskytnúť interaktívny nástroj na experimentovanie s rôznymi jadrovými funkciami, ktorý pomáha pochopiť, ako SVM funguje pri rozdeľovaní dát do jednotlivých tried.
+    - **Vizualizácia Bloby a Polmesiace:**  
+      V tejto sekcii sa vytvárajú syntetické datasety – bloby reprezentujúce viaceré klastre a polmesiace s prekrývajúcimi sa oblasťami. Použitie rôznych jadrov, ako sú lineárny alebo RBF kernel, ukáže, ako SVM dokáže oddeliť dáta aj v prípade nelineárnych vzorov. Vizualizácia obsahuje interaktívne zobrazenie rozhodovacích hraníc, ktoré ilustrujú, ako sa jednotlivé triedy navzájom delia.
+    - **Evaluácia Modelu:**  
+      Táto časť aplikácie umožňuje používateľovi vybrať kernel a dataset (napríklad HTRU2 alebo Wheat Seeds) a následne trénuje model na vybraných dátach. Po tréningu sa zobrazia kľúčové metriky, ako sú presnosť, precision, recall a F1 skóre, spolu s konfúznou maticou a vizualizáciou rozhodovacích oblastí. Tieto informácie pomáhajú lepšie pochopiť správanie a výkonnosť modelu v praxi.
+    Aplikácia je ideálna pre študentov, výskumníkov a každého, kto sa zaujíma o strojové učenie, pretože poskytuje prehľad o teoretických i praktických aspektoch SVM a umožňuje intuitívne skúmať, ako rôzne parametre ovplyvňujú klasifikačné výsledky.  
     """)
 
 import streamlit as st
@@ -40,17 +44,7 @@ def my_apply_pca(X, mean, components):
     return np.dot(X - mean, components)
 
 def my_plot_decision_regions(centers, model, X, y, title="Decision Regions"):
-    """
-    Generates a 2D decision-region plot.
     
-    - For binary classification (two classes), the function uses the model's decision_function 
-      to draw a continuous boundary.
-    - For multi-class (e.g., three classes), it uses model.predict to assign a color to each 
-      region and—if the model provides a multi-dimensional decision_function—draws dashed 
-      contour lines for the pairwise boundaries.
-      
-    Data is first reduced to 2D via PCA (using my_compute_pca and my_apply_pca).
-    """
     # Reduce data to 2D via PCA
     mean, components = my_compute_pca(X, n_components=2)
     X_pca = my_apply_pca(X, mean, components)
@@ -402,12 +396,3 @@ if selected_page == "Informácie o datasetoch":
     *Wheat Seeds*, ktorý obsahuje údaje o triedach rôznych typov semien.
     """)
     
-    st.markdown("""
-    **Návrh na ďalšie sekcie, ktoré by si mohol pridať:**
-    - **Interaktívna vizualizácia:** Umožniť používateľovi meniť parametre vizualizácie (napr. výber kernelu, počet vzoriek) 
-      a automaticky aktualizovať grafy.
-    - **Štatistické zhrnutie datasetu:** Zobraziť základné štatistiky (napr. priemer, rozptyl, histograme) pre každú 
-      premennú, prípadne korelačnú maticu.
-    - **Odkazy a zdroje:** Pridať sekciu s odkazmi na literatúru, články alebo repozitáre, kde sa čitateľ môže dozvedieť viac.
-    - **FAQ sekcia:** Krátke otázky a odpovede k používaným metódam, výhodám SVM a ďalším súvisiacim témam.
-    """)
