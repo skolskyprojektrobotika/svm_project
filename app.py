@@ -19,7 +19,8 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 pages = {
     "Main Menu": "main_menu",
     "Blobs and Moons Visualization": "visualization",
-    "Model Evaluation": "model_eval"
+    "Model Evaluation": "model_eval",
+    "Informácie o datasetoch": "info"
 }
 
 # Create a sidebar radio button for navigation
@@ -394,5 +395,21 @@ if selected_page == "Model Evaluation":
         st.success("Model evaluation complete!")
         st.session_state.eval_running = False
 
-
-
+if selected_page == "Informácie o datasetoch":
+    st.header("Informácie o datasetoch")
+    st.markdown("""
+    Dataset, ktorý používame, pochádza zo štúdie [HTRU2](https://archive.ics.uci.edu/ml/datasets/HTRU2) a obsahuje 
+    informácie zo štúdie rádiových signálov z pulsarov. V datasetoch sú zahrnuté rôzne atribúty (napr. štatistiky signálu) 
+    a cieľová premenná je binárna (pulsar alebo nie). Pre multi-klasifikáciu môžete použiť aj iný dataset, napríklad 
+    *Wheat Seeds*, ktorý obsahuje údaje o triedach rôznych typov semien.
+    """)
+    
+    st.markdown("""
+    **Návrh na ďalšie sekcie, ktoré by si mohol pridať:**
+    - **Interaktívna vizualizácia:** Umožniť používateľovi meniť parametre vizualizácie (napr. výber kernelu, počet vzoriek) 
+      a automaticky aktualizovať grafy.
+    - **Štatistické zhrnutie datasetu:** Zobraziť základné štatistiky (napr. priemer, rozptyl, histograme) pre každú 
+      premennú, prípadne korelačnú maticu.
+    - **Odkazy a zdroje:** Pridať sekciu s odkazmi na literatúru, články alebo repozitáre, kde sa čitateľ môže dozvedieť viac.
+    - **FAQ sekcia:** Krátke otázky a odpovede k používaným metódam, výhodám SVM a ďalším súvisiacim témam.
+    """)
