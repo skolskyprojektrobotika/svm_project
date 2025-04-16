@@ -131,9 +131,6 @@ if st.session_state.eval_running:
                 pos_indices = np.where(y_htru == 1)[0]
                 neg_indices = np.where(y_htru == -1)[0]
                 n_sample_per_class = 100
-                if len(pos_indices) < n_sample_per_class or len(neg_indices) < n_sample_per_class:
-                    print("Dataset nemá dosť vzoriek pre vyvážený výber.")
-                    return
                 selected_pos = np.random.choice(pos_indices, n_sample_per_class, replace=False)
                 selected_neg = np.random.choice(neg_indices, n_sample_per_class, replace=False)
                 selected_indices = np.concatenate([selected_pos, selected_neg])
