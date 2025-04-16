@@ -29,77 +29,53 @@ from commented_final import SVM, MultiClassSVM  # your custom SVM implementation
 def visualize_decision_regions(model, X, y, title="Decision Regions"):
     """
     Generates a decision region plot in 2D.
-    Assumes X has 2 features.
+    
+    For binary classification (two unique classes), the function uses the model’s decision_function 
+    to generate continuous contour boundaries. For multi-class datasets (e.g., multiple blob centers), 
+    it uses model.predict to create discrete regions.
+    
+    Assumes X has exactly 2 features.
     """
-    # Define bounds of the plot
+    # Define bounds of the plot based on X
     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200),
                          np.linspace(y_min, y_max, 200))
     
-    # Flatten grid and predict decision function values for each point
+    # Flatten grid and combine into a list of points
     grid_points = np.c_[xx.ravel(), yy.ravel()]
-    # For each grid point, use the model's decision_function:
-    Z = np.array([model.decision_function(point) for point in grid_points])
-    Z = Z.reshape(xx.shape)
     
-    # Create a figure and plot contours and data points
-    plt.figure()
-    # Fill contours: areas where the decision function is <0 or >0
-    plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.3, cmap="coolwarm")
-    # Draw the decision boundary (where decision_function == 0)
-    plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
-    # Overlay the training points
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap="coolwarm", edgecolor="k", s=30)
+    unique_classes = np.unique(y)
+    
+    if len(unique_classes) == 2:
+        # For binary classification, use decision_function if available.
+        Z = np.array([model.decision_function(point) for point in grid_points])
+        Z = Z.reshape(xx.shape)
+        
+        # Plot continuous decision regions with a contour boundary at 0
+        plt.figure()
+        plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.3, cmap="coolwarm")
+        plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
+    else:
+        # For multi-class, use model.predict to generate discrete labels
+        Z = model.predict(grid_points)
+        Z = Z.reshape(xx.shape)
+        
+        # Use a discrete colormap for multiple classes (e.g., 'viridis' or 'Set1')
+        plt.figure()
+        plt.contourf(xx, yy, Z, alpha=0.3, cmap="viridis")
+        # Optionally, add contour lines for the boundaries with dashed lines
+        plt.contour(xx, yy, Z, levels=np.unique(Z), colors="k", linestyles="dashed", linewidths=1)
+    
+    # Overlay the original training points
+    # For multi-class visualization, using the same colormap ensures consistent coloring.
+    cmap_choice = "coolwarm" if len(unique_classes) == 2 else "viridis"
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_choice, edgecolor="k", s=30)
     plt.title(title)
     plt.xlabel("Feature 1")
     plt.ylabel("Feature 2")
     plt.tight_layout()
-    return plt.gcf()
     
-def my_compute_pca(X, n_components=2):
-    mean = np.mean(X, axis=0)
-    X_centered = X - mean
-    cov = np.cov(X_centered, rowvar=False)
-    eigenvalues, eigenvectors = np.linalg.eigh(cov)
-    idx = np.argsort(eigenvalues)[::-1]
-    eigenvectors = eigenvectors[:, idx]
-    return mean, eigenvectors[:, :n_components]
-
-def my_apply_pca(X, mean, components):
-    return np.dot(X - mean, components)
-
-# Custom decision region plot function inspired by your code
-def my_plot_decision_regions(model, X, y, title="Decision Regions"):
-    # Reduce data to 2D via PCA
-    mean, components = my_compute_pca(X, n_components=2)
-    X_pca = my_apply_pca(X, mean, components)
-    x_min, x_max = X_pca[:, 0].min() - 1, X_pca[:, 0].max() + 1
-    y_min, y_max = X_pca[:, 1].min() - 1, X_pca[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100),
-                         np.linspace(y_min, y_max, 100))
-    grid = np.c_[xx.ravel(), yy.ravel()]
-    # Map the grid back to original space via the inverse PCA transform
-    X_approx = mean + np.dot(grid, components.T)
-    # Determine predictions on the grid. For binary classification, use decision_function.
-    if len(np.unique(y)) == 2:
-        Z = np.array([model.decision_function(x) for x in X_approx])
-        Z = Z.reshape(xx.shape)
-        plt.figure()
-        plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.2, cmap="bwr")
-        plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
-        plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap="bwr", edgecolors="k", s=30)
-    else:
-        # For multi-class, simply use predictions.
-        Z = model.predict(X_approx)
-        Z = Z.reshape(xx.shape)
-        plt.figure()
-        plt.contourf(xx, yy, Z, alpha=0.3, cmap="rainbow")
-        plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap="rainbow", edgecolors="k", s=30)
-    plt.title(title)
-    plt.xlabel("Principal Component 1")
-    plt.ylabel("Principal Component 2")
-    plt.tight_layout()
     return plt.gcf()
         
 # --- Streamlit App: Blobs and Moons Visualization ---
@@ -141,7 +117,7 @@ if selected_page == "Blobs and Moons Visualization":
             else:
                 model = MultiClassSVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
                 model.fit(X, y)
-                fig = my_plot_decision_regions(model, X, y, 
+                fig = visualize_decision_regions(model, X, y, 
                     title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
                 st.pyplot(fig)
             
@@ -213,7 +189,7 @@ if selected_page == "Model Evaluation":
         return accuracy, np.mean(precisions), np.mean(recalls), np.mean(f1s), cm, classes
     
     # Helper functions to perform a simple PCA reduction for visualization
-    """
+    
     def my_compute_pca(X, n_components=2):
         mean = np.mean(X, axis=0)
         X_centered = X - mean
@@ -258,7 +234,7 @@ if selected_page == "Model Evaluation":
         plt.ylabel("Principal Component 2")
         plt.tight_layout()
         return plt.gcf()
-    """
+    
     # ----- End of Helper Functions -----
     
     # Initialize session state variable for model evaluation page
