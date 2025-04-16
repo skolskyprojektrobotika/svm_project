@@ -23,7 +23,7 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs, make_moons
-from commented_final import SVM  # your custom SVM implementation
+from commented_final import SVM, MultiClassSVM  # your custom SVM implementation
 
 # --- Custom Visualization Function ---
 def visualize_decision_regions(model, X, y, title="Decision Regions"):
