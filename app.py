@@ -56,7 +56,52 @@ def visualize_decision_regions(model, X, y, title="Decision Regions"):
     plt.ylabel("Feature 2")
     plt.tight_layout()
     return plt.gcf()
+    
+def my_compute_pca(X, n_components=2):
+    mean = np.mean(X, axis=0)
+    X_centered = X - mean
+    cov = np.cov(X_centered, rowvar=False)
+    eigenvalues, eigenvectors = np.linalg.eigh(cov)
+    idx = np.argsort(eigenvalues)[::-1]
+    eigenvectors = eigenvectors[:, idx]
+    return mean, eigenvectors[:, :n_components]
 
+def my_apply_pca(X, mean, components):
+    return np.dot(X - mean, components)
+
+# Custom decision region plot function inspired by your code
+def my_plot_decision_regions(model, X, y, title="Decision Regions"):
+    # Reduce data to 2D via PCA
+    mean, components = my_compute_pca(X, n_components=2)
+    X_pca = my_apply_pca(X, mean, components)
+    x_min, x_max = X_pca[:, 0].min() - 1, X_pca[:, 0].max() + 1
+    y_min, y_max = X_pca[:, 1].min() - 1, X_pca[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100),
+                         np.linspace(y_min, y_max, 100))
+    grid = np.c_[xx.ravel(), yy.ravel()]
+    # Map the grid back to original space via the inverse PCA transform
+    X_approx = mean + np.dot(grid, components.T)
+    # Determine predictions on the grid. For binary classification, use decision_function.
+    if len(np.unique(y)) == 2:
+        Z = np.array([model.decision_function(x) for x in X_approx])
+        Z = Z.reshape(xx.shape)
+        plt.figure()
+        plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.2, cmap="bwr")
+        plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
+        plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap="bwr", edgecolors="k", s=30)
+    else:
+        # For multi-class, simply use predictions.
+        Z = model.predict(X_approx)
+        Z = Z.reshape(xx.shape)
+        plt.figure()
+        plt.contourf(xx, yy, Z, alpha=0.3, cmap="rainbow")
+        plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap="rainbow", edgecolors="k", s=30)
+    plt.title(title)
+    plt.xlabel("Principal Component 1")
+    plt.ylabel("Principal Component 2")
+    plt.tight_layout()
+    return plt.gcf()
+        
 # --- Streamlit App: Blobs and Moons Visualization ---
 if selected_page == "Blobs and Moons Visualization":
     st.title("Visualization of Blobs and Moons")
@@ -168,6 +213,7 @@ if selected_page == "Model Evaluation":
         return accuracy, np.mean(precisions), np.mean(recalls), np.mean(f1s), cm, classes
     
     # Helper functions to perform a simple PCA reduction for visualization
+    """
     def my_compute_pca(X, n_components=2):
         mean = np.mean(X, axis=0)
         X_centered = X - mean
@@ -212,7 +258,7 @@ if selected_page == "Model Evaluation":
         plt.ylabel("Principal Component 2")
         plt.tight_layout()
         return plt.gcf()
-    
+    """
     # ----- End of Helper Functions -----
     
     # Initialize session state variable for model evaluation page
