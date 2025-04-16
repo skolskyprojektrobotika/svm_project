@@ -64,6 +64,7 @@ if selected_page == "Blobs and Moons Visualization":
     # Select dataset and kernel from sidebar
     dataset_option = st.selectbox("Choose a dataset", ["Blobs", "Moons"])
     kernel_option = st.selectbox("Choose a kernel", ["linear", "rbf"])
+    centers_option = st.selectbox("Choose the number of classes", [2, 3, 4])
     
     # Initialize session state flag if not already set
     if "vis_running" not in st.session_state:
@@ -78,21 +79,29 @@ if selected_page == "Blobs and Moons Visualization":
         with st.spinner("Generating visualization..."):
             # Generate the selected dataset
             if dataset_option == "Blobs":
-                X, y = make_blobs(n_samples=300, centers=2, cluster_std=1.0, random_state=42)
+                X, y = make_blobs(n_samples=30, centers=2, cluster_std=1.0, random_state=42)
                 # Convert labels: ensure values are -1 and 1 for SVM compatibility
                 y = np.where(y == 0, -1, 1)
             else:  # Moons dataset
-                X, y = make_moons(n_samples=300, noise=0.2, random_state=42)
+                X, y = make_moons(n_samples=30, noise=0.2, random_state=42)
                 y = np.where(y == 0, -1, 1)
             
             # Train the SVM model with the chosen kernel
-            model = SVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
-            model.fit(X, y)
+            if (centers_option == 2 and dataset_option == "Blobs") or dataset_option == "Moons":
+                model = SVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
+                model.fit(X, y)
+                fig = visualize_decision_regions(model, X, y, 
+                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
+                st.pyplot(fig)
+            else:
+                model = MultiClassSVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
+                model.fit(X, y)
+                fig = my_plot_decision_regions(model, X, y, 
+                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
+                st.pyplot(fig)
             
             # Create a Matplotlib figure using the custom visualization function
-            fig = visualize_decision_regions(model, X, y, 
-                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
-            st.pyplot(fig)
+            
         st.success("Visualization complete!")
         # Reset the flag so that the button is clickable again.
         st.session_state.vis_running = False
