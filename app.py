@@ -36,46 +36,72 @@ def visualize_decision_regions(centers, model, X, y, title="Decision Regions"):
     
     Assumes X has exactly 2 features.
     """
-    # Define bounds of the plot based on X
+
+    
+    num_classes = centers
+    
+    # Define bounds of the plot
     x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
     y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200),
                          np.linspace(y_min, y_max, 200))
     
-    # Flatten grid and combine into a list of points
+    # Flatten grid and combine into list of points
     grid_points = np.c_[xx.ravel(), yy.ravel()]
-    
-    unique_classes = centers
-    
-    if unique_classes == 2:
-        # For binary classification, use decision_function if available.
-        Z = np.array([model.decision_function(point) for point in grid_points])
+
+    if num_classes == 2:
+        # ---- BINARY CLASSIFICATION ----
+        # Evaluate decision_function for each point in the grid
+        Z = np.array([model.decision_function(pt) for pt in grid_points])
         Z = Z.reshape(xx.shape)
-        
-        # Plot continuous decision regions with a contour boundary at 0
+
+        # Plot continuous decision regions with a contour at 0
         plt.figure()
         plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.3, cmap="coolwarm")
         plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
+
+        # Scatter the data
+        plt.scatter(X[:, 0], X[:, 1], c=y, cmap="coolwarm", edgecolor="k", s=30)
+
     else:
-        # For multi-class, use model.predict to generate discrete labels
-        Z = model.predict(grid_points)
-        Z = Z.reshape(xx.shape)
-        
-        # Use a discrete colormap for multiple classes (e.g., 'viridis' or 'Set1')
+        # ---- MULTI-CLASS CLASSIFICATION ----
+        # 1) Plot discrete color regions for each class using model.predict
+        Z_pred = model.predict(grid_points)  # shape = (n_points,)
+        Z_pred = Z_pred.reshape(xx.shape)
+
+        # Use a discrete colormap for multiple classes, e.g., "Set1", "viridis", etc.
         plt.figure()
-        plt.contourf(xx, yy, Z, alpha=0.3, cmap="viridis")
-        # Optionally, add contour lines for the boundaries with dashed lines
-        plt.contour(xx, yy, Z, levels=np.unique(Z), colors="k", linestyles="dashed", linewidths=1)
-    
-    # Overlay the original training points
-    # For multi-class visualization, using the same colormap ensures consistent coloring.
-    cmap_choice = "coolwarm" if unique_classes == 2 else "viridis"
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_choice, edgecolor="k", s=30)
+        plt.contourf(xx, yy, Z_pred, alpha=0.3, cmap="Set1")
+
+        # 2) Draw pairwise boundary lines using the multi-class decision_function
+        #    -> shape = (n_points, num_classes). For each pair of classes (i, j),
+        #       the boundary is where decision_values[:, i] = decision_values[:, j].
+        #       i.e., decision_values[:, i] - decision_values[:, j] = 0.
+        try:
+            decision_values = model.decision_function(grid_points)  # shape: (n_points, num_classes)
+            decision_values = np.array(decision_values)  # ensure it's a NumPy array
+
+            # For each pair of classes, plot the contour line where decision_i == decision_j
+            for i in range(num_classes):
+                for j in range(i + 1, num_classes):
+                    # F(x) = decision_i(x) - decision_j(x)
+                    F = decision_values[:, i] - decision_values[:, j]
+                    F = F.reshape(xx.shape)
+                    # Plot the zero contour => boundary between classes i and j
+                    plt.contour(xx, yy, F, levels=[0], colors="k", linestyles="--", linewidths=1)
+
+        except AttributeError:
+            # If your model doesn't implement multi-class decision_function, skip boundary lines
+            pass
+
+        # Scatter the data points, colored by their class
+        plt.scatter(X[:, 0], X[:, 1], c=y, cmap="Set1", edgecolor="k", s=30)
+
+    # Common plot settings
     plt.title(title)
     plt.xlabel("Feature 1")
     plt.ylabel("Feature 2")
     plt.tight_layout()
-    
     return plt.gcf()
         
 # --- Streamlit App: Blobs and Moons Visualization ---
