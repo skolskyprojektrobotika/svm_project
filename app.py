@@ -129,7 +129,7 @@ if selected_page == "Blobs and Moons Visualization":
         with st.spinner("Generating visualization..."):
             # Generate the selected dataset
             if dataset_option == "Blobs":
-                X, y = make_blobs(n_samples=30, centers=centers_option, cluster_std=1.0, random_state=42)
+                X, y = make_blobs(n_samples=30, n_features=centers_option, centers=centers_option, cluster_std=1.0, random_state=42)
                 # Convert labels: ensure values are -1 and 1 for SVM compatibility
                 y = np.where(y == 0, -1, 1)
             else:  # Moons dataset
