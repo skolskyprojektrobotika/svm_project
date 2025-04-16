@@ -2,24 +2,24 @@ import streamlit as st
 
 # Define the pages
 pages = {
-    "Menu": "main_menu",
+    "Hlavné Menu": "main_menu",
     "Vizualizácia fungovania kernelov": "visualization",
     "Testovanie modelov": "model_eval",
     "Informácie o datasetoch": "info"
 }
 
 # Create a sidebar radio button for navigation
-selected_page = st.sidebar.radio("Navigation", list(pages.keys()))
+selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
 
 if selected_page == "Menu":
     st.title("SVM Aplikácia Demo")
     st.markdown(""" 
     **Prehľad:**  
-    Táto aplikácia demonštruje vlastnú implementáciu algoritmu Support Vector Machine (SVM) využívajúcu SMO (Sequential Minimal Optimization) pre optimalizáciu modelu. Cieľom je poskytnúť interaktívny nástroj na experimentovanie s rôznymi jadrovými funkciami, ktorý pomáha pochopiť, ako SVM funguje pri rozdeľovaní dát do jednotlivých tried.
-    - **Vizualizácia Bloby a Polmesiace:**  
-      V tejto sekcii sa vytvárajú syntetické datasety – bloby reprezentujúce viaceré klastre a polmesiace s prekrývajúcimi sa oblasťami. Použitie rôznych jadrov, ako sú lineárny alebo RBF kernel, ukáže, ako SVM dokáže oddeliť dáta aj v prípade nelineárnych vzorov. Vizualizácia obsahuje interaktívne zobrazenie rozhodovacích hraníc, ktoré ilustrujú, ako sa jednotlivé triedy navzájom delia.
-    - **Evaluácia Modelu:**  
-      Táto časť aplikácie umožňuje používateľovi vybrať kernel a dataset (napríklad HTRU2 alebo Wheat Seeds) a následne trénuje model na vybraných dátach. Po tréningu sa zobrazia kľúčové metriky, ako sú presnosť, precision, recall a F1 skóre, spolu s konfúznou maticou a vizualizáciou rozhodovacích oblastí. Tieto informácie pomáhajú lepšie pochopiť správanie a výkonnosť modelu v praxi.
+    Táto aplikácia demonštruje vlastnú implementáciu algoritmu Support Vector Machine (SVM) využívajúcu SMO (Sequential Minimal Optimization) pre optimalizáciu modelu. Cieľom je poskytnúť interaktívny nástroj na experimentovanie s rôznymi kernelovými funkciami, ktorý pomáha pochopiť, ako SVM funguje pri rozdeľovaní dát do jednotlivých tried.
+    - **Vizualizácia Bloby a Moons (polmesiace):**  
+      V tejto sekcii sa vytvárajú syntetické datasety – blobs reprezentujúce viaceré klastre a moons s prekrývajúcimi sa oblasťami. Použitie rôznych kernelov, ukáže, ako SVM dokáže oddeliť dáta aj v prípade nelineárnych vzorov. Vizualizácia obsahuje interaktívne zobrazenie rozhodovacích hraníc, ktoré ilustrujú, ako sa jednotlivé triedy navzájom delia.
+    - **Testovanie Modelov:**  
+      Táto časť aplikácie umožňuje používateľovi vybrať kernel a datasety (HTRU2 alebo Wheat Seeds) a následne trénuje model na vybraných dátach. Po tréningu sa zobrazia kľúčové metriky, ako sú presnosť, precision, recall a F1 skóre, spolu s konfúznou maticou a vizualizáciou rozhodovacích oblastí. Tieto informácie pomáhajú lepšie pochopiť správanie a výkonnosť modelu v praxi.
     Aplikácia je ideálna pre študentov, výskumníkov a každého, kto sa zaujíma o strojové učenie, pretože poskytuje prehľad o teoretických i praktických aspektoch SVM a umožňuje intuitívne skúmať, ako rôzne parametre ovplyvňujú klasifikačné výsledky.  
     """)
 
@@ -105,10 +105,10 @@ def my_plot_decision_regions(centers, model, X, y, title="Decision Regions"):
 if selected_page == "Vizualizácia fungovania kernelov":
     st.title("Vizualizácia fungovania kernelov")
     st.markdown("""
-    Táto sekcia demonštruje generovanie syntetických datasetov, konkrétne "bloby" a "polmesiace", ktoré slúžia na vizualizáciu rozhodovacích hraníc SVM modelu.  
-    - **Bloby:** Použitie datasetu s viacerými klastrami, kde každý klaster reprezentuje inú triedu.  
-    - **Polmesiace:** Dataset tvorený dvoma prekrývajúcimi sa tvárami, ktorý je vhodný pre vizualizáciu nelineárne oddelených tried.  
-    - Pri vybranom datasete sa trénuje SVM model s vybraným kernelom (napr. lineárny alebo RBF) a následne sa vykreslia rozhodovacie oblasti, ktoré ukazujú, ako model rozdeľuje jednotlivé triedy na základe trénovacích dát.
+    Táto sekcia demonštruje generovanie syntetických datasetov, konkrétne blobs a moons, ktoré slúžia na vizualizáciu rozhodovacích hraníc SVM modelu.  
+    - **Blobs:** Použitie datasetu s viacerými klastrami, kde každý klaster reprezentuje inú triedu.  
+    - **Moons:** Dataset tvorený dvoma prekrývajúcimi sa polmesiacmi, ktorý je vhodný pre vizualizáciu nelineárne oddelených tried.  
+    - Pri vybranom datasete sa trénuje SVM model s vybraným kernelom (lineárny alebo RBF) a následne sa vykreslia rozhodovacie oblasti, ktoré ukazujú, ako model rozdeľuje jednotlivé triedy na základe trénovacích dát.
     """)
     
     # Select dataset and kernel from sidebar
@@ -167,7 +167,7 @@ from commented_final import SVM, MultiClassSVM  # Import your SVM classes only
 if selected_page == "Testovanie modelov":
     st.title("Testovanie modelov")
     st.markdown("""
-    V tejto časti sa testuje a vyhodnocuje SVM (alebo MultiClassSVM) model použitím reálnych datasetov, ako je HTRU2 alebo Wheat Seeds.  
+    V tejto časti sa testuje a vyhodnocuje SVM (alebo MultiClassSVM) model použitím reálnych datasetov, ako je HTRU2 alebo Wheat Seeds. Tieto datasety boli taktiež použité pri vyprcovaní hlavného zadania. 
     - **Spracovanie dát:** Dataset je načítaný, normalizovaný a rozdelený na trénovaciu a testovaciu množinu.  
     - **Tréning modelu:** Na základe vybraného kernelu sa trénuje model na trénovacích dátach.  
     - **Hodnotenie:** Po trénovaní sa model testuje na testovacej množine, pričom sa počítajú metriky ako accuracy, precision, recall a F1 skóre.  
@@ -389,9 +389,8 @@ if selected_page == "Testovanie modelov":
 if selected_page == "Informácie o datasetoch":
     st.header("Informácie o datasetoch")
     st.markdown("""
-    Dataset, ktorý používame, pochádza zo štúdie [HTRU2](https://archive.ics.uci.edu/ml/datasets/HTRU2) a obsahuje 
-    informácie zo štúdie rádiových signálov z pulsarov. V datasetoch sú zahrnuté rôzne atribúty (napr. štatistiky signálu) 
-    a cieľová premenná je binárna (pulsar alebo nie). Pre multi-klasifikáciu môžete použiť aj iný dataset, napríklad 
-    *Wheat Seeds*, ktorý obsahuje údaje o triedach rôznych typov semien.
+    Dataset, ktorý používame, pochádza zo štúdie [HTRU2](https://archive.ics.uci.edu/ml/datasets/HTRU2), ktorá analyzuje signály pulsarov získavané z rádiových prenosov. Tento dataset obsahuje rôzne atribúty, napríklad štatistické veličiny signálu, a cieľová premenná je binárna – určuje, či ide o pulsar, alebo nie. Dáta zo štúdie HTRU2 boli využité na detekciu pulsarov a poskytujú zaujímavý základ pre experimentovanie s klasifikáciou pomocou SVM, najmä pre demonštráciu oddelenia dvoch tried pomocou rôznych jadrových funkcií.
+    Pre multi-klasifikáciu môžete použiť aj dataset [Wheat Seeds](https://archive.ics.uci.edu/ml/datasets/seeds), ktorý obsahuje údaje o troch rôznych typoch semien pšenice. Tento dataset zahŕňa geometrické a štrukturálne vlastnosti semien, ktoré umožňujú rozlíšiť medzi jednotlivými odrodami. Vďaka viackategóriovému charakteru je ideálny pre demonštráciu, ako modely zvládajú úlohy s viacerými triedami a vizualizáciu rozhodovacích hraníc medzi tromi zaujímavými skupinami.
+    Oba datasety ponúkajú atraktívny základ pre experimenty v oblasti strojového učenia, umožňujú porovnanie výkonnosti algoritmov na binárnych aj viackategóriových úlohách a prispievajú k lepšiemu pochopeniu fungovania SVM modelov.
     """)
     
