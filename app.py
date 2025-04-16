@@ -11,8 +11,8 @@ pages = {
 # Create a sidebar radio button for navigation
 selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
 
-if selected_page == "Menu":
-    st.title("SVM Aplikácia Demo")
+if selected_page == "Hlavné Menu":
+    st.title("SVM Aplikácia")
     st.markdown(""" 
     **Prehľad:**  
     Táto aplikácia demonštruje vlastnú implementáciu algoritmu Support Vector Machine (SVM) využívajúcu SMO (Sequential Minimal Optimization) pre optimalizáciu modelu. Cieľom je poskytnúť interaktívny nástroj na experimentovanie s rôznymi kernelovými funkciami, ktorý pomáha pochopiť, ako SVM funguje pri rozdeľovaní dát do jednotlivých tried.
