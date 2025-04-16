@@ -16,7 +16,7 @@ if selected_page == "Hlavné Menu":
     st.markdown(""" 
     **Prehľad:**  
     Táto aplikácia demonštruje vlastnú implementáciu Support Vector Machine (SVM) využívajúcu SMO (Sequential Minimal Optimization) pre optimalizáciu modelu. Cieľom je poskytnúť interaktívny nástroj na experimentovanie s rôznymi kernelovými funkciami, ktorý pomáha pochopiť, ako SVM funguje pri rozdeľovaní dát do jednotlivých tried.
-    - **Vizualizácia Bloby a Moons (polmesiace):**  
+    - **Vizualizácia - Bloby a Moons (polmesiace):**  
       V tejto sekcii sa vytvárajú syntetické datasety – blobs reprezentujúce viaceré klastre a moons s prekrývajúcimi sa oblasťami. Použitie rôznych kernelov, ukáže, ako SVM dokáže oddeliť dáta aj v prípade nelineárnych vzorov. Vizualizácia obsahuje interaktívne zobrazenie rozhodovacích hraníc, ktoré ilustrujú, ako sa jednotlivé triedy navzájom delia.
     - **Testovanie Modelov:**  
       Táto časť aplikácie umožňuje používateľovi vybrať kernel a datasety (HTRU2 alebo Wheat Seeds) a následne trénuje model na vybraných dátach. Po tréningu sa zobrazia kľúčové metriky, ako sú presnosť, precision, recall a F1 skóre, spolu s konfúznou maticou a vizualizáciou rozhodovacích oblastí. Tieto informácie pomáhajú lepšie pochopiť správanie a výkonnosť modelu v praxi.
