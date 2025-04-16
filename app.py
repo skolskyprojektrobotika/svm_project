@@ -2,16 +2,16 @@ import streamlit as st
 
 # Define the pages
 pages = {
-    "Main Menu": "main_menu",
-    "Blobs and Moons Visualization": "visualization",
-    "Model Evaluation": "model_eval",
+    "Menu": "main_menu",
+    "Vizualizácia fungovania kernelov": "visualization",
+    "Testovanie modelov": "model_eval",
     "Informácie o datasetoch": "info"
 }
 
 # Create a sidebar radio button for navigation
 selected_page = st.sidebar.radio("Navigation", list(pages.keys()))
 
-if selected_page == "Main Menu":
+if selected_page == "Menu":
     st.title("SVM Application Demo")
     st.markdown("""
     **Overview:**  
@@ -109,8 +109,14 @@ def my_plot_decision_regions(centers, model, X, y, title="Decision Regions"):
     return plt.gcf()
         
 # --- Streamlit App: Blobs and Moons Visualization ---
-if selected_page == "Blobs and Moons Visualization":
-    st.title("Visualization of Blobs and Moons")
+if selected_page == "Vizualizácia fungovania kernelov":
+    st.title("Vizualizácia fungovania kernelov")
+    st.markdown("""
+    Táto sekcia demonštruje generovanie syntetických datasetov, konkrétne "bloby" a "polmesiace", ktoré slúžia na vizualizáciu rozhodovacích hraníc SVM modelu.  
+    - **Bloby:** Použitie datasetu s viacerými klastrami, kde každý klaster reprezentuje inú triedu.  
+    - **Polmesiace:** Dataset tvorený dvoma prekrývajúcimi sa tvárami, ktorý je vhodný pre vizualizáciu nelineárne oddelených tried.  
+    - Pri vybranom datasete sa trénuje SVM model s vybraným kernelom (napr. lineárny alebo RBF) a následne sa vykreslia rozhodovacie oblasti, ktoré ukazujú, ako model rozdeľuje jednotlivé triedy na základe trénovacích dát.
+    """)
     
     # Select dataset and kernel from sidebar
     dataset_option = st.selectbox("Choose a dataset", ["Blobs", "Moons"])
@@ -165,8 +171,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from commented_final import SVM, MultiClassSVM  # Import your SVM classes only
 
-if selected_page == "Model Evaluation":
-    st.title("Model Evaluation")
+if selected_page == "Testovanie modelov":
+    st.title("Testovanie modelov")
+    st.markdown("""
+    V tejto časti sa testuje a vyhodnocuje SVM (alebo MultiClassSVM) model použitím reálnych datasetov, ako je HTRU2 alebo Wheat Seeds.  
+    - **Spracovanie dát:** Dataset je načítaný, normalizovaný a rozdelený na trénovaciu a testovaciu množinu.  
+    - **Tréning modelu:** Na základe vybraného kernelu sa trénuje model na trénovacích dátach.  
+    - **Hodnotenie:** Po trénovaní sa model testuje na testovacej množine, pričom sa počítajú metriky ako accuracy, precision, recall a F1 skóre.  
+    - **Vizualizácia výsledkov:** Sú zobrazené konfúzna matica a rozhodovacie oblasti, čo poskytuje prehľad o správaní a výkonnosti modelu.
+    """)
     
     # Sidebar selections for kernel and dataset
     kernel_choice = st.selectbox("Select Kernel", ["linear", "poly", "rbf", "sigmoid"])
