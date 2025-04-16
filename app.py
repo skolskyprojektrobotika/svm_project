@@ -58,7 +58,7 @@ def visualize_decision_regions(model, X, y, title="Decision Regions"):
     return plt.gcf()
 
 # --- Streamlit App: Blobs and Moons Visualization ---
-if selected_page == "Visualization of Blobs and Moons":
+if selected_page == "Blobs and Moons Visualization":
     st.title("Visualization of Blobs and Moons")
     
     # Select dataset and kernel from sidebar
