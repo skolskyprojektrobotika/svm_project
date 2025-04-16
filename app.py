@@ -13,8 +13,7 @@ selected_page = st.sidebar.radio("Navigation", list(pages.keys()))
 
 if selected_page == "Menu":
     st.title("SVM Aplikácia Demo")
-    st.markdown("""
-    **Overview:**  
+    st.markdown(""" 
     **Prehľad:**  
     Táto aplikácia demonštruje vlastnú implementáciu algoritmu Support Vector Machine (SVM) využívajúcu SMO (Sequential Minimal Optimization) pre optimalizáciu modelu. Cieľom je poskytnúť interaktívny nástroj na experimentovanie s rôznymi jadrovými funkciami, ktorý pomáha pochopiť, ako SVM funguje pri rozdeľovaní dát do jednotlivých tried.
     - **Vizualizácia Bloby a Polmesiace:**  
