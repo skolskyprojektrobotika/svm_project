@@ -26,81 +26,84 @@ from sklearn.datasets import make_blobs, make_moons
 from commented_final import SVM, MultiClassSVM  # your custom SVM implementation
 
 # --- Custom Visualization Function ---
-def visualize_decision_regions(centers, model, X, y, title="Decision Regions"):
-    """
-    Generates a decision region plot in 2D.
+def my_compute_pca(X, n_components=2):
+    mean = np.mean(X, axis=0)
+    X_centered = X - mean
+    cov = np.cov(X_centered, rowvar=False)
+    eigenvalues, eigenvectors = np.linalg.eigh(cov)
+    idx = np.argsort(eigenvalues)[::-1]
+    eigenvectors = eigenvectors[:, idx]
+    return mean, eigenvectors[:, :n_components]
     
-    For binary classification (two unique classes), the function uses the model’s decision_function 
-    to generate continuous contour boundaries. For multi-class datasets (e.g., multiple blob centers), 
-    it uses model.predict to create discrete regions.
-    
-    Assumes X has exactly 2 features.
-    """
+def my_apply_pca(X, mean, components):
+    return np.dot(X - mean, components)
 
+def my_plot_decision_regions(centers, model, X, y, title="Decision Regions"):
+    """
+    Generates a 2D decision-region plot.
+    
+    - For binary classification (two classes), the function uses the model's decision_function 
+      to draw a continuous boundary.
+    - For multi-class (e.g., three classes), it uses model.predict to assign a color to each 
+      region and—if the model provides a multi-dimensional decision_function—draws dashed 
+      contour lines for the pairwise boundaries.
+      
+    Data is first reduced to 2D via PCA (using my_compute_pca and my_apply_pca).
+    """
+    # Reduce data to 2D via PCA
+    mean, components = my_compute_pca(X, n_components=2)
+    X_pca = my_apply_pca(X, mean, components)
+    
+    # Determine plot boundaries in the PCA space
+    x_min, x_max = X_pca[:, 0].min() - 1, X_pca[:, 0].max() + 1
+    y_min, y_max = X_pca[:, 1].min() - 1, X_pca[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100),
+                         np.linspace(y_min, y_max, 100))
+    
+    # Map grid back to original space using the inverse PCA transform
+    grid = np.c_[xx.ravel(), yy.ravel()]
+    X_approx = mean + np.dot(grid, components.T)
     
     num_classes = centers
+    plt.figure()
     
-    # Define bounds of the plot
-    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200),
-                         np.linspace(y_min, y_max, 200))
-    
-    # Flatten grid and combine into list of points
-    grid_points = np.c_[xx.ravel(), yy.ravel()]
-
     if num_classes == 2:
-        # ---- BINARY CLASSIFICATION ----
-        # Evaluate decision_function for each point in the grid
-        Z = np.array([model.decision_function(pt) for pt in grid_points])
+        # ---- Binary classification branch ----
+        Z = np.array([model.decision_function(x) for x in X_approx])
         Z = Z.reshape(xx.shape)
-
-        # Plot continuous decision regions with a contour at 0
-        plt.figure()
-        plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.3, cmap="coolwarm")
+        plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.2, cmap="bwr")
         plt.contour(xx, yy, Z, levels=[0], colors="k", linewidths=2)
-
-        # Scatter the data
-        plt.scatter(X[:, 0], X[:, 1], c=y, cmap="coolwarm", edgecolor="k", s=30)
-
     else:
-        # ---- MULTI-CLASS CLASSIFICATION ----
-        # 1) Plot discrete color regions for each class using model.predict
-        Z_pred = model.predict(grid_points)  # shape = (n_points,)
+        # ---- Multi-class branch ----
+        # Fill each region with the predicted label using a discrete colormap.
+        Z_pred = model.predict(X_approx)
         Z_pred = Z_pred.reshape(xx.shape)
-
-        # Use a discrete colormap for multiple classes, e.g., "Set1", "viridis", etc.
-        plt.figure()
-        plt.contourf(xx, yy, Z_pred, alpha=0.3, cmap="Set1")
-
-        # 2) Draw pairwise boundary lines using the multi-class decision_function
-        #    -> shape = (n_points, num_classes). For each pair of classes (i, j),
-        #       the boundary is where decision_values[:, i] = decision_values[:, j].
-        #       i.e., decision_values[:, i] - decision_values[:, j] = 0.
+        plt.contourf(xx, yy, Z_pred, alpha=0.3, cmap="rainbow")
+        
+        # Now, attempt to draw pairwise decision boundaries.
+        # This block expects model.decision_function to return an array of shape (n_points, n_classes)
         try:
-            decision_values = model.decision_function(grid_points)  # shape: (n_points, num_classes)
-            decision_values = np.array(decision_values)  # ensure it's a NumPy array
-
-            # For each pair of classes, plot the contour line where decision_i == decision_j
+            decision_values = model.decision_function(X_approx)  # shape (n_points, n_classes)
+            decision_values = np.array(decision_values)
             for i in range(num_classes):
                 for j in range(i + 1, num_classes):
-                    # F(x) = decision_i(x) - decision_j(x)
+                    # Compute the difference: decision value for class i minus that for class j
                     F = decision_values[:, i] - decision_values[:, j]
                     F = F.reshape(xx.shape)
-                    # Plot the zero contour => boundary between classes i and j
                     plt.contour(xx, yy, F, levels=[0], colors="k", linestyles="--", linewidths=1)
-
-        except AttributeError:
-            # If your model doesn't implement multi-class decision_function, skip boundary lines
-            pass
-
-        # Scatter the data points, colored by their class
-        plt.scatter(X[:, 0], X[:, 1], c=y, cmap="Set1", edgecolor="k", s=30)
-
-    # Common plot settings
+        except Exception as e:
+            # If model.decision_function is unavailable for multi-class,
+            # a fallback is to compute boundaries from discrete predictions.
+            unique_vals = np.sort(np.unique(Z_pred))
+            if len(unique_vals) > 1:
+                boundaries = [(unique_vals[k] + unique_vals[k + 1]) / 2 for k in range(len(unique_vals) - 1)]
+                plt.contour(xx, yy, Z_pred, levels=boundaries, colors="k", linestyles="--")
+    
+    # Overlay the (PCA-transformed) data points using the same discrete colormap.
+    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap="rainbow", edgecolor="k", s=30)
     plt.title(title)
-    plt.xlabel("Feature 1")
-    plt.ylabel("Feature 2")
+    plt.xlabel("Principal Component 1")
+    plt.ylabel("Principal Component 2")
     plt.tight_layout()
     return plt.gcf()
         
