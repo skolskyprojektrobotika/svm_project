@@ -140,13 +140,13 @@ if selected_page == "Blobs and Moons Visualization":
             if (centers_option == 2 and dataset_option == "Blobs") or dataset_option == "Moons":
                 model = SVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
                 model.fit(X, y)
-                fig = visualize_decision_regions(centers_option, model, X, y, 
+                fig = my_plot_decision_regions(centers_option, model, X, y, 
                     title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
                 st.pyplot(fig)
             else:
                 model = MultiClassSVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
                 model.fit(X, y)
-                fig = visualize_decision_regions(centers_option, model, X, y, 
+                fig = my_plot_decision_regions(centers_option, model, X, y, 
                     title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
                 st.pyplot(fig)
             
