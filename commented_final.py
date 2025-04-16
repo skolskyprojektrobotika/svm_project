@@ -327,14 +327,14 @@ def plot_decision_regions(model, X, y, title='Rozhodovacia hranica'):
         Z.append(model.decision_function(x))
     Z = np.array(Z).reshape(xx.shape)
     
-    plt.figure()
-    plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.2, cmap=plt.cm.bwr)
-    plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='k')
-    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap=plt.cm.bwr, edgecolors='k')
-    plt.title(title)
-    plt.xlabel('Hlavná zložka 1')
-    plt.ylabel('Hlavná zložka 2')
-    plt.tight_layout()
+    # plt.figure()
+    # plt.contourf(xx, yy, Z, levels=[Z.min(), 0, Z.max()], alpha=0.2, cmap=plt.cm.bwr)
+    # plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='k')
+    # plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap=plt.cm.bwr, edgecolors='k')
+    # plt.title(title)
+    # plt.xlabel('Hlavná zložka 1')
+    # plt.ylabel('Hlavná zložka 2')
+    # plt.tight_layout()
 
 def plot_decision_regions_multiclass(model, X, y, title='Rozhodovacia hranica'):
     # Vizualizácia rozhodovacích hraníc pre viactriednu klasifikáciu pomocou PCA
