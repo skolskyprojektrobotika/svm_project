@@ -47,7 +47,7 @@ def visualize_decision_regions(centers, model, X, y, title="Decision Regions"):
     
     unique_classes = centers
     
-    if len(unique_classes) == 2:
+    if unique_classes == 2:
         # For binary classification, use decision_function if available.
         Z = np.array([model.decision_function(point) for point in grid_points])
         Z = Z.reshape(xx.shape)
