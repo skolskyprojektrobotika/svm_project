@@ -69,7 +69,7 @@ def visualize_decision_regions(centers, model, X, y, title="Decision Regions"):
     
     # Overlay the original training points
     # For multi-class visualization, using the same colormap ensures consistent coloring.
-    cmap_choice = "coolwarm" if len(unique_classes) == 2 else "viridis"
+    cmap_choice = "coolwarm" if unique_classes == 2 else "viridis"
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_choice, edgecolor="k", s=30)
     plt.title(title)
     plt.xlabel("Feature 1")
