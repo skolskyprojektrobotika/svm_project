@@ -114,7 +114,7 @@ if selected_page == "Blobs and Moons Visualization":
     # Select dataset and kernel from sidebar
     dataset_option = st.selectbox("Choose a dataset", ["Blobs", "Moons"])
     kernel_option = st.selectbox("Choose a kernel", ["linear", "rbf"])
-    centers_option = st.selectbox("Choose the number of classes", [2, 3, 4])
+    centers_option = 2
     
     # Initialize session state flag if not already set
     if "vis_running" not in st.session_state:
