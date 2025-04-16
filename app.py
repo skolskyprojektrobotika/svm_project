@@ -26,7 +26,7 @@ from sklearn.datasets import make_blobs, make_moons
 from commented_final import SVM, MultiClassSVM  # your custom SVM implementation
 
 # --- Custom Visualization Function ---
-def visualize_decision_regions(model, X, y, title="Decision Regions"):
+def visualize_decision_regions(model, X, y, title="Decision Regions", centers):
     """
     Generates a decision region plot in 2D.
     
@@ -45,7 +45,7 @@ def visualize_decision_regions(model, X, y, title="Decision Regions"):
     # Flatten grid and combine into a list of points
     grid_points = np.c_[xx.ravel(), yy.ravel()]
     
-    unique_classes = np.unique(y)
+    unique_classes = centers
     
     if len(unique_classes) == 2:
         # For binary classification, use decision_function if available.
@@ -112,13 +112,13 @@ if selected_page == "Blobs and Moons Visualization":
                 model = SVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
                 model.fit(X, y)
                 fig = visualize_decision_regions(model, X, y, 
-                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
+                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}", centers_option)
                 st.pyplot(fig)
             else:
                 model = MultiClassSVM(kernel=kernel_option, C=1.0, tol=1e-3, max_passes=20, max_iter=100, gamma=0.5)
                 model.fit(X, y)
                 fig = visualize_decision_regions(model, X, y, 
-                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}")
+                    title=f"{kernel_option.capitalize()} Kernel on {dataset_option}", centers_option)
                 st.pyplot(fig)
             
             # Create a Matplotlib figure using the custom visualization function
