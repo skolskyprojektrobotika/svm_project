@@ -22,7 +22,7 @@ st.markdown("""
         width: 100vw;
         height: 100vh;
         z-index: -1;
-        opacity: 0.2;
+        opacity: 0.8;
         pointer-events: none;
         overflow: hidden;
     }
