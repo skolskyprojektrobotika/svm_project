@@ -9,7 +9,7 @@ def load_lottie_file(filepath: str):
     with open(filepath, "r") as f:
         return json.load(f)
 
-lottie_bg = load_lottie_file("assets/background.json")
+lottie_bg = load_lottie_file("0ByN8qzzTL.json")
 
 # Inject CSS to fix animation to the background
 st.markdown("""
