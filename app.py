@@ -43,7 +43,7 @@ div[data-testid="stAnimation"] iframe {
 """, unsafe_allow_html=True)
 
 with st.container():
-    st_lottie(lottie_bg, height=100vh, width=100vw, speed=1, loop=True, quality="low", key="bg_anim")
+    st_lottie(lottie_bg, speed=1, loop=True, quality="low", key="bg_anim")
 
 # Define the pages
 pages = {
