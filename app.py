@@ -10,6 +10,20 @@ pages = {
 
 # Create a sidebar radio button for navigation
 selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
+st.sidebar.write("Autor: Daniel Zemančík")
+st.markdown("""
+    <style>
+    [data-testid="stSidebar"] {
+        background-color: #2C3036;
+        padding-top: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+        color: #8FBCBB;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 if selected_page == "Hlavné Menu":
     st.title("SVM Aplikácia")
