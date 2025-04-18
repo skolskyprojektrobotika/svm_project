@@ -23,11 +23,17 @@ st_lottie(
 # 3) CSS override to full‑screen the injected iframe
 st.markdown("""
 <style>
-/* make sure the app is above the background */
-section[data-testid="stApp"] {
-  position: relative;
-  z-index: 1;
-}
+.lottie-background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        opacity: 0.2;
+        pointer-events: none;
+        overflow: hidden;
+    }
 
 /* target the Lottie iframe and force it full-screen behind everything */
 div[data-testid="stAnimation"] iframe {
