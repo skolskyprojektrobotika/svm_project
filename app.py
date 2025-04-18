@@ -1,5 +1,39 @@
 import streamlit as st
 
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
+
+def load_lottie_url(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+# Replace with your Lottie animation URL
+lottie_bg = load_lottie_url("https://lottie.host/faec48a2-eea3-4b10-bfd5-16e4afed1888/MTOw5eyACm.lottie")  # example background
+
+# Insert Lottie animation into a fixed background container
+st.markdown("""
+    <style>
+    .lottie-container {
+        position: fixed;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+    </style>
+    <div class="lottie-container" id="lottie-background"></div>
+    """, unsafe_allow_html=True)
+
+# Render animation in the hidden background div
+with st.container():
+    st_lottie(lottie_bg, height=700, key="background", speed=1, loop=True, quality="low")
+
 # Define the pages
 pages = {
     "Hlavné Menu": "main_menu",
@@ -56,7 +90,7 @@ if selected == "Domov":
     - **Vizualizácia - Bloby a Moons (polmesiace):**  
       V tejto sekcii sa vytvárajú syntetické datasety – blobs reprezentujúce viaceré klastre a moons s prekrývajúcimi sa oblasťami. Použitie rôznych kernelov, ukáže, ako SVM dokáže oddeliť dáta aj v prípade nelineárnych vzorov. Vizualizácia obsahuje interaktívne zobrazenie rozhodovacích hraníc, ktoré ilustrujú, ako sa jednotlivé triedy navzájom delia.
     - **Testovanie Modelov:**  
-      Táto časť aplikácie umožňuje používateľovi vybrať kernel a datasety (HTRU2 alebo Wheat Seeds) a následne trénuje model na vybraných dátach. Po tréningu sa zobrazia kľúčové metriky, ako sú presnosť, precision, recall a F1 skóre, spolu s konfúznou maticou a vizualizáciou rozhodovacích oblastí. Tieto informácie pomáhajú lepšie pochopiť správanie a výkonnosť modelu v praxi.
+      Táto časť aplikácie umožňuje používateľovi vybrať kernel a datasety (HTRU2 alebo Wheat Seeds) a následne trénuje model na vybraných dátach. Po tréningu sa zobrazia kľúčové metriky, ako sú správnosť, presnosť, návratnosť a F1 skóre, spolu s konfúznou maticou a vizualizáciou rozhodovacích oblastí. Tieto informácie pomáhajú lepšie pochopiť správanie a výkonnosť modelu v praxi.
     Aplikácia je ideálna pre študentov, výskumníkov a každého, kto sa zaujíma o strojové učenie, pretože poskytuje prehľad o teoretických i praktických aspektoch SVM a umožňuje intuitívne skúmať, ako rôzne parametre ovplyvňujú klasifikačné výsledky.  
     """)
 
