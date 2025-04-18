@@ -27,7 +27,7 @@ selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
 st.sidebar.write("Autor: Daniel Zemančík")
 
 from PIL import Image
-logo = Image.open("WS_TSNE_LIN.png")
+logo = Image.open("logosvm.png")
 st.sidebar.image(logo, use_container_width=True)
 
 if selected_page == "Hlavné Menu":
