@@ -15,21 +15,36 @@ lottie_bg = load_lottie("0ByN8qzzTL.json")
 # Add custom CSS to position the animation in the background
 st.markdown("""
     <style>
-    #lottie-bg iframe {
+    .block-container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .lottie-background {
         position: fixed;
-        z-index: -1;
-        top: 0;
-        left: 0;
         width: 100vw;
         height: 100vh;
-        opacity: 0.2;
+        top: 0;
+        left: 0;
+        z-index: 0;
         pointer-events: none;
+        opacity: 0.2;
+    }
+
+    iframe[src*="lottie"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: none;
     }
     </style>
-    <div id="lottie-bg"></div>
+
+    <div class="lottie-background">
+        <!-- Lottie will inject iframe here -->
+    </div>
 """, unsafe_allow_html=True)
 
-# Now render the Lottie **outside containers** (directly into the custom div)
+# Actually render the Lottie animation
 st_lottie(
     lottie_bg,
     speed=1,
@@ -37,7 +52,7 @@ st_lottie(
     quality="low",
     height=1080,
     width=1920,
-    key="bg",
+    key="bg_animation"
 )
     
 # Define the pages
