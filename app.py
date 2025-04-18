@@ -1,54 +1,44 @@
 import streamlit as st
 
 import streamlit as st
-from streamlit_lottie import st_lottie
+import streamlit.components.v1 as components
 import json
 
-# Load local Lottie animation
-def load_lottie(filepath):
-    with open(filepath, "r") as f:
+# Load your Lottie JSON (or you can host it somewhere and point to the URL)
+def load_lottie_file(path):
+    with open(path, "r") as f:
         return json.load(f)
 
-lottie_bg = load_lottie("0ByN8qzzTL.json")
+lottie_json = load_lottie_file("0ByN8qzzTL.json")
+# If you have a URL instead:
+# lottie_url = "https://assetsX.lottiefiles.com/packages/lf20_XXXX.json"
 
-# 🔧 Custom style to force container AND iframe to stretch fullscreen
-st.markdown("""
-    <style>
-    .lottie-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
-        z-index: -1;
-        pointer-events: none;
-        overflow: hidden;
-        opacity: 0.25;
-    }
+# Convert to a data URL so the <lottie-player> can fetch it
+import base64
+lottie_base64 = base64.b64encode(json.dumps(lottie_json).encode()).decode()
+data_url = f"data:application/json;base64,{lottie_base64}"
 
-    .lottie-container iframe {
-        position: absolute !important;
-        top: 0;
-        left: 0;
-        height: 100% !important;
-        width: 100% !important;
-        border: none !important;
-    }
-    </style>
+# Build the HTML
+html = f"""
+    background="transparent"
+    speed="1"
+    loop
+    autoplay
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.2;
+    ">
+</lottie-player>
+"""
 
-    <div class="lottie-container" id="lottie-bg"></div>
-""", unsafe_allow_html=True)
-
-# ✅ Render the animation — MUST be outside st.container() or layout blocks
-st_lottie(
-    lottie_bg,
-    speed=1,
-    loop=True,
-    quality="low",
-    height=1000,  # Big enough to trigger the injection
-    width=2000,
-    key="bg_anim",
-)
+# 3) Inject it (height=0 so it doesn’t take up layout space)
+components.html(html, height=0, width=0)
     
 # Define the pages
 pages = {
