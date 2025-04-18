@@ -8,6 +8,19 @@ pages = {
     "Informácie o datasetoch": "info"
 }
 
+# Simulate a topbar with columns
+col1, col2 = st.columns([1, 5])
+
+with col1:
+    st.image("logo.png", width=60)
+
+with col2:
+    menu = st.selectbox(
+        "Navigácia", 
+        options=["Domov", "Vizualizácia", "Evaluácia modelu"], 
+        label_visibility="collapsed"
+    )
+
 # Create a sidebar radio button for navigation
 st.markdown("""
     <style>
