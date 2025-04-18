@@ -9,19 +9,19 @@ pages = {
 }
 
 # Simulate a topbar with columns
-col2 = st.columns([1, 10])
+from streamlit_option_menu import option_menu
 
-from PIL import Image
-logo = Image.open("logosvm.png")
+# Horizontal menu at the top
+selected = option_menu(
+    menu_title=None,
+    options=["Domov", "Vizualizácia", "Evaluácia"],
+    icons=["house", "bar-chart", "clipboard-data"],
+    menu_icon="cast",
+    default_index=0,
+    orientation="horizontal",
+)
 
-
-
-with col2:
-    menu = st.selectbox(
-        "Navigácia", 
-        options=["Domov", "Vizualizácia", "Evaluácia modelu"], 
-        label_visibility="collapsed"
-    )
+st.title(f"{selected}")
 
 # Create a sidebar radio button for navigation
 st.markdown("""
