@@ -8,3 +8,4 @@ streamlit-lottie
 streamlit-pandas-profiling
 pandas-profiling
 plotly
+ydata_profiling
