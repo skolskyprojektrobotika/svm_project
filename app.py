@@ -31,7 +31,7 @@ st.markdown("""
 
 # Now render the Lottie **outside containers** (directly into the custom div)
 st_lottie(
-    lottie_json,
+    lottie_bg,
     speed=1,
     loop=True,
     quality="low",
