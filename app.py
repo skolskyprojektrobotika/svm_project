@@ -9,7 +9,7 @@ pages = {
 }
 
 # Simulate a topbar with columns
-col2 = st.columns([10])
+col2 = st.columns([1, 10])
 
 from PIL import Image
 logo = Image.open("logosvm.png")
