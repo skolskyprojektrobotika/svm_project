@@ -15,31 +15,33 @@ lottie_bg = load_lottie("0ByN8qzzTL.json")
 
 # 3) CSS override to full‑screen the injected iframe
 st.markdown("""
-<style>
-.lottie-background-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1;
-        opacity: 0.2;
-        pointer-events: none;
-        overflow: hidden;
+    <style>
+    .lottie-background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+            overflow: hidden;
     }
-
-/* target the Lottie iframe and force it full-screen behind everything */
-div[data-testid="stAnimation"] iframe {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-  opacity: 0.2 !important;
-}
-</style>
+    
+    /* target the Lottie iframe and force it full-screen behind everything */
+    div[data-testid="stAnimation"] iframe {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: -1 !important;
+      pointer-events: none !important;
+      opacity: 0.2 !important;
+    }
+    </style>
+    <div class="lottie-background-container" id="lottie-background">
+</div>
 """, unsafe_allow_html=True)
 
 with st.container():
