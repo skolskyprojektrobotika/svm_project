@@ -9,43 +9,45 @@ def load_lottie(filepath):
     with open(filepath, "r") as f:
         return json.load(f)
 
-bg_anim = load_lottie("0ByN8qzzTL.json")
+lottie_bg = load_lottie("0ByN8qzzTL.json")
 
-# Inject CSS to fully stretch the animation behind the app
+# 🔧 Custom style to force container AND iframe to stretch fullscreen
 st.markdown("""
     <style>
-    .lottie-background {
+    .lottie-container {
         position: fixed;
-        width: 100vw;
-        height: 100vh;
         top: 0;
         left: 0;
+        height: 100vh;
+        width: 100vw;
         z-index: -1;
         pointer-events: none;
-        opacity: 0.2;
+        overflow: hidden;
+        opacity: 0.25;
     }
 
-    .lottie-background iframe {
-        width: 100% !important;
-        height: 100% !important;
-        position: absolute;
+    .lottie-container iframe {
+        position: absolute !important;
         top: 0;
         left: 0;
-        border: none;
+        height: 100% !important;
+        width: 100% !important;
+        border: none !important;
     }
     </style>
-    <div class="lottie-background" id="lottie-background-container"></div>
+
+    <div class="lottie-container" id="lottie-bg"></div>
 """, unsafe_allow_html=True)
 
-# Actually render the Lottie animation
+# ✅ Render the animation — MUST be outside st.container() or layout blocks
 st_lottie(
-    bg_anim,
+    lottie_bg,
     speed=1,
     loop=True,
     quality="low",
-    height=1080,
-    width=1920,
-    key="bg_animation"
+    height=1000,  # Big enough to trigger the injection
+    width=2000,
+    key="bg_anim",
 )
     
 # Define the pages
