@@ -15,29 +15,30 @@ lottie_bg = load_lottie("0ByN8qzzTL.json")
 # Add custom CSS to position the animation in the background
 st.markdown("""
     <style>
-    .lottie-background-container {
+    #lottie-bg iframe {
         position: fixed;
+        z-index: -1;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: -1;
-        opacity: 0.8;
+        opacity: 0.2;
         pointer-events: none;
-        overflow: hidden;
-    }
-    iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
     }
     </style>
-    <div class="lottie-background-container" id="lottie-background"></div>
+    <div id="lottie-bg"></div>
 """, unsafe_allow_html=True)
 
-# Render the animation into the container
-with st.container():
-    st_lottie(lottie_bg, height=1080, width=1920, speed=1, loop=True, quality="low", key="bg_anim")
+# Now render the Lottie **outside containers** (directly into the custom div)
+st_lottie(
+    lottie_json,
+    speed=1,
+    loop=True,
+    quality="low",
+    height=1080,
+    width=1920,
+    key="bg",
+)
     
 # Define the pages
 pages = {
