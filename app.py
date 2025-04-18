@@ -5,14 +5,13 @@ from streamlit_lottie import st_lottie
 import json
 
 # Load local Lottie animation
-def load_lottie(filepath: str):
+def load_lottie(filepath):
     with open(filepath, "r") as f:
         return json.load(f)
 
-# Load your background animation JSON
-lottie_bg = load_lottie("0ByN8qzzTL.json")
+bg_anim = load_lottie("0ByN8qzzTL.json")
 
-# Add custom CSS to position the animation in the background
+# Inject CSS to fully stretch the animation behind the app
 st.markdown("""
     <style>
     .block-container {
@@ -46,7 +45,7 @@ st.markdown("""
 
 # Actually render the Lottie animation
 st_lottie(
-    lottie_bg,
+    bg_anim,
     speed=1,
     loop=True,
     quality="low",
