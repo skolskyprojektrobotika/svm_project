@@ -14,33 +14,27 @@ bg_anim = load_lottie("0ByN8qzzTL.json")
 # Inject CSS to fully stretch the animation behind the app
 st.markdown("""
     <style>
-    .block-container {
-        position: relative;
-        z-index: 1;
-    }
-
     .lottie-background {
         position: fixed;
         width: 100vw;
         height: 100vh;
         top: 0;
         left: 0;
-        z-index: 0;
+        z-index: -1;
         pointer-events: none;
         opacity: 0.2;
     }
 
-    iframe[src*="lottie"] {
+    .lottie-background iframe {
+        width: 100% !important;
+        height: 100% !important;
         position: absolute;
-        width: 100%;
-        height: 100%;
+        top: 0;
+        left: 0;
         border: none;
     }
     </style>
-
-    <div class="lottie-background">
-        <!-- Lottie will inject iframe here -->
-    </div>
+    <div class="lottie-background" id="lottie-background-container"></div>
 """, unsafe_allow_html=True)
 
 # Actually render the Lottie animation
