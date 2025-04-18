@@ -431,27 +431,10 @@ if selected == "Datasety":
     Oba datasety ponúkajú atraktívny základ pre experimenty v oblasti strojového učenia, umožňujú porovnanie výkonnosti algoritmov na binárnych aj viackategóriových úlohách a prispievajú k lepšiemu pochopeniu fungovania SVM modelov.
     """)
 
-    from pandas_profiling import ProfileReport
-    from streamlit_pandas_profiling import st_profile_report
+    st.markdown("""
+    Pre multi-klasifikáciu môžete použiť aj dataset [Wheat Seeds](https://archive.ics.uci.edu/ml/datasets/seeds), ktorý obsahuje údaje o troch rôznych typoch semien pšenice. Tento dataset zahŕňa geometrické a štrukturálne vlastnosti semien, ktoré umožňujú rozlíšiť medzi jednotlivými odrodami. Vďaka viackategóriovému charakteru je ideálny pre demonštráciu, ako modely zvládajú úlohy s viacerými triedami a vizualizáciu rozhodovacích hraníc medzi tromi zaujímavými skupinami.
+    """)
     
-    st.title("📋 Automatizovaná Profilácia Datasetov")
-    
-    dataset = st.selectbox("Vyber dataset", ["HTRU_2.csv", "wheat_seeds.csv"])
-    
-    # Load the selected dataset
-    if dataset == "HTRU_2.csv":
-        df = pd.read_csv("HTRU_2.csv", header=None)
-        df.columns = [f"Atr{i}" for i in range(df.shape[1] - 1)] + ["Cieľ"]
-    elif dataset == "wheat_seeds.csv":
-        df = pd.read_csv("wheat_seeds.csv")
-        if df.columns[-1] != "Cieľ":
-            df.rename(columns={df.columns[-1]: "Cieľ"}, inplace=True)
-    
-    # Show a preview
-    st.subheader("🧾 Ukážka dát")
-    st.dataframe(df.head())
-    
-    # Generate and display the profile report
-    st.subheader("📊 Profilovací report")
-    profile = ProfileReport(df, title=f"Profilácia dát – {dataset}", minimal=True)
-    st_profile_report(profile)
+    st.markdown("""
+    Oba datasety ponúkajú atraktívny základ pre experimenty v oblasti strojového učenia, umožňujú porovnanie výkonnosti algoritmov na binárnych aj viackategóriových úlohách a prispievajú k lepšiemu pochopeniu fungovania SVM modelov.
+    """)
