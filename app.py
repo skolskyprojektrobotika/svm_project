@@ -14,8 +14,7 @@ col1, col2 = st.columns([1, 5])
 from PIL import Image
 logo = Image.open("logosvm.png")
 
-with col1:
-    
+
 
 with col2:
     menu = st.selectbox(
