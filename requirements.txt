@@ -5,7 +5,6 @@ pandas
 scikit-learn
 streamlit_option_menu
 streamlit-lottie
-pandas-profiling==3.6.6
-pydantic<2
+pandas-profiling
 streamlit-pandas-profiling
 plotly
