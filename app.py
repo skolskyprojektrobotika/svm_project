@@ -47,12 +47,9 @@ import requests
 def load_lottieurl(url: str):
     return requests.get(url).json()
 
-lottie_anim = load_lottieurl("https://assets2.lottiefiles.com/packages/lf20_x62chJ.json")
-st_lottie(lottie_anim, speed=1, loop=True, height=300)
-
 if selected_page == "Hlavné Menu":
     lottie_anim = load_lottieurl("https://assets2.lottiefiles.com/packages/lf20_x62chJ.json")
-    st_lottie(lottie_anim, speed=1, loop=True, height=300)
+    
 
     st.title("SVM Aplikácia")
     st.markdown(""" 
