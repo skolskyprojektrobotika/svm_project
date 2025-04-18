@@ -14,10 +14,8 @@ from streamlit_option_menu import option_menu
 # Horizontal menu at the top
 selected = option_menu(
     menu_title=None,
-    options=["Domov", "Vizualizácia", "Evaluácia"],
-    icons=["house", "bar-chart", "clipboard-data"],
-    menu_icon="cast",
-    default_index=0,
+    options=["Domov", "Vizualizácia", "Evaluácia", "Dokumentácia"],
+    icons=["house", "bar-chart", "clipboard-data", "file-earmark-text"],
     orientation="horizontal",
 )
 
