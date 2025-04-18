@@ -15,7 +15,7 @@ from PIL import Image
 logo = Image.open("logosvm.png")
 
 with col1:
-    st.image("logo.png", width=60)
+    
 
 with col2:
     menu = st.selectbox(
