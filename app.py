@@ -29,7 +29,7 @@ st.markdown("""
     }
     
     /* target the Lottie iframe and force it full-screen behind everything */
-    div[data-testid="stAnimation"] iframe {
+    iframe {
       position: absolute !important;
       top: 0 !important;
       left: 0 !important;
