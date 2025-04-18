@@ -32,7 +32,7 @@ html = f"""
       height: 100vh;
       z-index: -1;
       pointer-events: none;
-      opacity: 0.2;
+      opacity: 0.8;
     ">
 </lottie-player>
 """
