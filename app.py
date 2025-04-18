@@ -20,7 +20,7 @@ container.markdown("""
       width: 100vw; height: 100vh;
       z-index: -1;
       pointer-events: none;
-      opacity: 0.15;
+      opacity: 0.8;
     }
     .full-screen-lottie lottie-player {
       width: 100%; height: 100%;
