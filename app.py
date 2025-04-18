@@ -41,7 +41,14 @@ st.markdown("""
 selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
 st.sidebar.write("Autor: Daniel Zemančík")
 
+from streamlit_lottie import st_lottie
+import requests
 
+def load_lottieurl(url: str):
+    return requests.get(url).json()
+
+lottie_anim = load_lottieurl("https://assets7.lottiefiles.com/packages/lf20_dy5l6c1d.json")
+st_lottie(lottie_anim, speed=1, loop=True, height=300)
 
 if selected_page == "Hlavné Menu":
     st.title("SVM Aplikácia")
