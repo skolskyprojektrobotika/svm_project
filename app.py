@@ -36,8 +36,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
-st.sidebar.write("Autor: Daniel Zemančík")
+#selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
+#st.sidebar.write("Autor: Daniel Zemančík")
 
 from streamlit_lottie import st_lottie
 import requests
@@ -45,7 +45,7 @@ import requests
 def load_lottieurl(url: str):
     return requests.get(url).json()
 
-if selected_page == "Hlavné Menu":
+if selected == "Domov":
     lottie_anim = load_lottieurl("https://assets2.lottiefiles.com/packages/lf20_x62chJ.json")
     
 
@@ -139,7 +139,7 @@ def my_plot_decision_regions(centers, model, X, y, title="Decision Regions"):
     return plt.gcf()
         
 # --- Streamlit App: Blobs and Moons Visualization ---
-if selected_page == "Vizualizácia fungovania kernelov":
+if selected == "Vizualizácia":
     st.title("Vizualizácia fungovania kernelov")
     st.markdown("""
     Táto sekcia demonštruje generovanie syntetických datasetov, konkrétne blobs a moons, ktoré slúžia na vizualizáciu rozhodovacích hraníc SVM modelu.  
@@ -201,7 +201,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from commented_final import SVM, MultiClassSVM  # Import your SVM classes only
 
-if selected_page == "Testovanie modelov":
+if selected == "Evaluácia":
     st.title("Testovanie modelov")
     st.markdown("""
     V tejto časti sa testuje a vyhodnocuje SVM (alebo MultiClassSVM) model použitím reálnych datasetov, ako je HTRU2 alebo Wheat Seeds. Tieto datasety boli taktiež použité pri vypracovaní hlavného zadania. 
@@ -423,7 +423,7 @@ if selected_page == "Testovanie modelov":
         st.success("Model evaluation complete!")
         st.session_state.eval_running = False
 
-if selected_page == "Informácie o datasetoch":
+if selected == "Dokumentácia":
     st.header("Informácie o datasetoch")
     st.markdown("""
     Dataset, ktorý používame, pochádza zo štúdie [HTRU2](https://archive.ics.uci.edu/ml/datasets/HTRU2), ktorá analyzuje signály pulsarov získavané z rádiových prenosov. Tento dataset obsahuje rôzne atribúty, napríklad štatistické veličiny signálu, a cieľová premenná je binárna – určuje, či ide o pulsar, alebo nie. Dáta zo štúdie HTRU2 boli využité na detekciu pulsarov a poskytujú zaujímavý základ pre experimentovanie s klasifikáciou pomocou SVM, najmä pre demonštráciu oddelenia dvoch tried pomocou rôznych kernelových funkcií.
