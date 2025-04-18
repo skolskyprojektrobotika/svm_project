@@ -19,7 +19,7 @@ selected = option_menu(
     orientation="horizontal",
 )
 
-st.title(f"{selected}")
+#st.title(f"{selected}")
 
 # Create a sidebar radio button for navigation
 st.markdown("""
