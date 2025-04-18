@@ -25,9 +25,10 @@ st.markdown("""
 
 selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
 st.sidebar.write("Autor: Daniel Zemančík")
-from PIL import Image
 
-logo = Image.open("logo.png")
+from PIL import Image
+logo = Image.open("WS_TSNE_LIN.png")
+st.sidebar.image(logo, use_container_width=True)
 
 if selected_page == "Hlavné Menu":
     st.title("SVM Aplikácia")
