@@ -12,13 +12,6 @@ def load_lottie(path):
 lottie_bg = load_lottie("0ByN8qzzTL.json")
 
 # 2) Render the Lottie animation (size doesn't matter here)
-st_lottie(
-    lottie_bg,
-    speed=1,
-    loop=True,
-    quality="low",
-    key="bg_anim"
-)
 
 # 3) CSS override to full‑screen the injected iframe
 st.markdown("""
@@ -48,7 +41,10 @@ div[data-testid="stAnimation"] iframe {
 }
 </style>
 """, unsafe_allow_html=True)
-    
+
+with st.container():
+    st_lottie(lottie_bg, height=100vh, width=100vw, speed=1, loop=True, quality="low", key="bg_anim")
+
 # Define the pages
 pages = {
     "Hlavné Menu": "main_menu",
