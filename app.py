@@ -4,17 +4,18 @@ import streamlit as st
 from streamlit_lottie import st_lottie
 import json
 
-# Load local Lottie JSON file
-def load_lottie_file(filepath: str):
+# Load local Lottie animation
+def load_lottie(filepath: str):
     with open(filepath, "r") as f:
         return json.load(f)
 
-lottie_bg = load_lottie_file("0ByN8qzzTL.json")
+# Load your background animation JSON
+lottie_bg = load_lottie("0ByN8qzzTL.json")
 
-# Inject CSS to fix animation to the background
+# Add custom CSS to position the animation in the background
 st.markdown("""
     <style>
-    .lottie-container {
+    .lottie-background-container {
         position: fixed;
         top: 0;
         left: 0;
@@ -23,21 +24,21 @@ st.markdown("""
         z-index: -1;
         opacity: 0.2;
         pointer-events: none;
+        overflow: hidden;
+    }
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
     </style>
-    <div class="lottie-container" id="lottie-background"></div>
+    <div class="lottie-background-container" id="lottie-background"></div>
 """, unsafe_allow_html=True)
 
-# Render the Lottie animation as a background (inside hidden container)
+# Render the animation into the container
 with st.container():
-    st_lottie(
-        lottie_bg,
-        speed=1,
-        loop=True,
-        quality="low",
-        height=700,
-        key="background"
-    )
+    st_lottie(lottie_bg, height=1080, width=1920, speed=1, loop=True, quality="low", key="bg_anim")
+    
 # Define the pages
 pages = {
     "Hlavné Menu": "main_menu",
