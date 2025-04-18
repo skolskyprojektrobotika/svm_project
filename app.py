@@ -431,16 +431,14 @@ if selected == "Datasety":
     Oba datasety ponúkajú atraktívny základ pre experimenty v oblasti strojového učenia, umožňujú porovnanie výkonnosti algoritmov na binárnych aj viackategóriových úlohách a prispievajú k lepšiemu pochopeniu fungovania SVM modelov.
     """)
 
-    import streamlit as st
-    import pandas as pd
-    from ydata_profiling import ProfileReport
+    from pandas_profiling import ProfileReport
     from streamlit_pandas_profiling import st_profile_report
     
-    st.title("📋 Profilovanie Datasetov")
+    st.title("📋 Automatizovaná Profilácia Datasetov")
     
-    dataset = st.selectbox("Vyber dataset na analýzu", ["HTRU_2.csv", "wheat_seeds.csv"])
+    dataset = st.selectbox("Vyber dataset", ["HTRU_2.csv", "wheat_seeds.csv"])
     
-    # Load and profile based on selection
+    # Load the selected dataset
     if dataset == "HTRU_2.csv":
         df = pd.read_csv("HTRU_2.csv", header=None)
         df.columns = [f"Atr{i}" for i in range(df.shape[1] - 1)] + ["Cieľ"]
@@ -449,11 +447,11 @@ if selected == "Datasety":
         if df.columns[-1] != "Cieľ":
             df.rename(columns={df.columns[-1]: "Cieľ"}, inplace=True)
     
-    # Show dataframe summary
-    st.write("Ukážka dát:")
+    # Show a preview
+    st.subheader("🧾 Ukážka dát")
     st.dataframe(df.head())
     
-    # Generate and display profile
-    st.markdown("### Automatizovaný Profilovací Report")
-    profile = ProfileReport(df, title=f"Profil Report – {dataset}", minimal=True)
+    # Generate and display the profile report
+    st.subheader("📊 Profilovací report")
+    profile = ProfileReport(df, title=f"Profilácia dát – {dataset}", minimal=True)
     st_profile_report(profile)
