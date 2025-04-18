@@ -3,6 +3,7 @@ import streamlit as st
 import streamlit as st
 from streamlit_lottie import st_lottie
 import json
+import base64
 
 def load_lottie(path):
     with open(path, "r") as f:
