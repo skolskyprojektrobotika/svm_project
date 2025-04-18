@@ -2,38 +2,42 @@ import streamlit as st
 
 import streamlit as st
 from streamlit_lottie import st_lottie
-import requests
+import json
 
-def load_lottie_url(url):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
+# Load local Lottie JSON file
+def load_lottie_file(filepath: str):
+    with open(filepath, "r") as f:
+        return json.load(f)
 
-# Replace with your Lottie animation URL
-lottie_bg = load_lottie_url("https://lottie.host/faec48a2-eea3-4b10-bfd5-16e4afed1888/MTOw5eyACm.lottie")  # example background
+lottie_bg = load_lottie_file("assets/background.json")
 
-# Insert Lottie animation into a fixed background container
+# Inject CSS to fix animation to the background
 st.markdown("""
     <style>
     .lottie-container {
         position: fixed;
-        z-index: -1;
-        width: 100vw;
-        height: 100vh;
         top: 0;
         left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
         opacity: 0.2;
         pointer-events: none;
     }
     </style>
     <div class="lottie-container" id="lottie-background"></div>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-# Render animation in the hidden background div
+# Render the Lottie animation as a background (inside hidden container)
 with st.container():
-    st_lottie(lottie_bg, height=700, key="background", speed=1, loop=True, quality="low")
-
+    st_lottie(
+        lottie_bg,
+        speed=1,
+        loop=True,
+        quality="low",
+        height=700,
+        key="background"
+    )
 # Define the pages
 pages = {
     "Hlavné Menu": "main_menu",
