@@ -25,7 +25,7 @@ st.markdown("""
 
 selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
 st.sidebar.write("Autor: Daniel Zemančík")
-st.sidebar.image("https://www.google.com/search?q=svm+logo+image+shutterstock&sca_esv=ec1c0fa4563bd641&udm=2&biw=1920&bih=953&sxsrf=AHTn8zqSPEpHbhTsR2NLSG19UmOtwE4MUQ%3A1744974560448&ei=4DICaKKJG_-L7NYP-8H1iQg&ved=0ahUKEwii-cTmuOGMAxX_BdsEHftgPYEQ4dUDCBE&uact=5&oq=svm+logo+image+shutterstock&gs_lp=EgNpbWciG3N2bSBsb2dvIGltYWdlIHNodXR0ZXJzdG9ja0jtEFD4AlixD3ABeACQAQCYAVegAaoGqgECMTO4AQPIAQD4AQGYAgKgAkfCAgcQIxgnGMkCwgIEEAAYHpgDAIgGAZIHATKgB-IEsgcBMbgHPg&sclient=img#vhid=34FPQSnI0I1ohM&vssid=mosaic", use_column_width=True)
+st.sidebar.image("https://www.google.com/search?q=svm+logo+image+shutterstock&sca_esv=ec1c0fa4563bd641&udm=2&biw=1920&bih=953&sxsrf=AHTn8zqSPEpHbhTsR2NLSG19UmOtwE4MUQ%3A1744974560448&ei=4DICaKKJG_-L7NYP-8H1iQg&ved=0ahUKEwii-cTmuOGMAxX_BdsEHftgPYEQ4dUDCBE&uact=5&oq=svm+logo+image+shutterstock&gs_lp=EgNpbWciG3N2bSBsb2dvIGltYWdlIHNodXR0ZXJzdG9ja0jtEFD4AlixD3ABeACQAQCYAVegAaoGqgECMTO4AQPIAQD4AQGYAgKgAkfCAgcQIxgnGMkCwgIEEAAYHpgDAIgGAZIHATKgB-IEsgcBMbgHPg&sclient=img#vhid=34FPQSnI0I1ohM&vssid=mosaic", use_container_width=True)
 
 if selected_page == "Hlavné Menu":
     st.title("SVM Aplikácia")
