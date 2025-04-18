@@ -9,8 +9,6 @@ pages = {
 }
 
 # Create a sidebar radio button for navigation
-selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
-st.sidebar.write("Autor: Daniel Zemančík")
 st.markdown("""
     <style>
     [data-testid="stSidebar"] {
@@ -24,6 +22,9 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+selected_page = st.sidebar.radio("Navigácia", list(pages.keys()))
+st.sidebar.write("Autor: Daniel Zemančík")
 
 if selected_page == "Hlavné Menu":
     st.title("SVM Aplikácia")
