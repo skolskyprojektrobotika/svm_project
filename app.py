@@ -1,41 +1,6 @@
 import streamlit as st
 
-import streamlit as st
-from streamlit_lottie import st_lottie
-import json
-import base64
 
-def load_lottie(path):
-    with open(path, "r") as f:
-        return json.load(f)
-
-lottie_bg = load_lottie("0ByN8qzzTL.json")
-
-st.markdown("""
-    <style>
-    .lottie-background-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1;
-        opacity: 0.01;
-        pointer-events: none;
-        overflow: hidden;
-    }
-    iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    </style>
-    <div class="lottie-background-container" id="lottie-background"></div>
-""", unsafe_allow_html=True)
-
-# Render the animation into the container
-with st.container():
-    st_lottie(lottie_bg, speed=1, loop=True, quality="low", key="bg_anim") 
 
 # Define the pages
 pages = {
