@@ -35,7 +35,7 @@ st.markdown("""
 
 # Render the animation into the container
 with st.container():
-    st_lottie(lottie_bg, height=1080, width=1920, speed=1, loop=True, quality="low", key="bg_anim") but wasnt correct size, your current has good ssize so combine them
+    st_lottie(lottie_bg, speed=1, loop=True, quality="low", key="bg_anim") 
 
 # Define the pages
 pages = {
