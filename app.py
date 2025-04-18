@@ -11,42 +11,31 @@ def load_lottie(path):
 
 lottie_bg = load_lottie("0ByN8qzzTL.json")
 
-# 1) Create a container and inject the lottie-player script + a full-screen div
-container = st.container()
-container.markdown("""
-  <style>
-    .full-screen-lottie {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.8;
-    }
-    .full-screen-lottie lottie-player {
-      width: 100%; height: 100%;
-    }
-  </style>
-  <!-- load the LottiePlayer web component -->
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <!-- full-screen wrapper -->
-  <div class="full-screen-lottie">
-    <lottie-player 
-      src="data:application/json;base64,{}"
-      background="transparent"
-      speed="1"
-      loop
-      autoplay>
-    </lottie-player>
-  </div>
-""".format(
-    # embed your JSON as base64
-    base64.b64encode(json.dumps(lottie_bg).encode()).decode()
-), unsafe_allow_html=True)
+# 2) Render the Lottie animation (size doesn't matter here)
+st_lottie(
+    lottie_bg,
+    speed=1,
+    loop=True,
+    quality="low",
+    key="background",
+)
 
-# 2) Then render your normal page title/content below
-st.title("SVM Aplikácia")
-st.markdown("Tu príde tvoj obsah úvodnej stránky...")
+# 3) Immediately inject CSS to re‑position that iframe
+st.markdown("""
+<style>
+/* Target the st_lottie iframe */
+div[data-testid="stAnimation"] iframe {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+    opacity: 0.15 !important;
+}
+</style>
+""", unsafe_allow_html=True)
     
 # Define the pages
 pages = {
