@@ -20,7 +20,7 @@ st.markdown("""
         width: 100vw;
         height: 100vh;
         z-index: -1;
-        opacity: 0.8;
+        opacity: 0.01;
         pointer-events: none;
         overflow: hidden;
     }
