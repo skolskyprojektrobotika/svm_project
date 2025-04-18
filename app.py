@@ -1,44 +1,51 @@
 import streamlit as st
 
 import streamlit as st
-import streamlit.components.v1 as components
+from streamlit_lottie import st_lottie
 import json
 
-# Load your Lottie JSON (or you can host it somewhere and point to the URL)
-def load_lottie_file(path):
+def load_lottie(path):
     with open(path, "r") as f:
         return json.load(f)
 
-lottie_json = load_lottie_file("0ByN8qzzTL.json")
-# If you have a URL instead:
-# lottie_url = "https://assetsX.lottiefiles.com/packages/lf20_XXXX.json"
+lottie_bg = load_lottie("0ByN8qzzTL.json")
 
-# Convert to a data URL so the <lottie-player> can fetch it
-import base64
-lottie_base64 = base64.b64encode(json.dumps(lottie_json).encode()).decode()
-data_url = f"data:application/json;base64,{lottie_base64}"
-
-# Build the HTML
-html = f"""
-    background="transparent"
-    speed="1"
-    loop
-    autoplay
-    style="
+# 1) Create a container and inject the lottie-player script + a full-screen div
+container = st.container()
+container.markdown("""
+  <style>
+    .full-screen-lottie {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       z-index: -1;
       pointer-events: none;
-      opacity: 0.8;
-    ">
-</lottie-player>
-"""
+      opacity: 0.15;
+    }
+    .full-screen-lottie lottie-player {
+      width: 100%; height: 100%;
+    }
+  </style>
+  <!-- load the LottiePlayer web component -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <!-- full-screen wrapper -->
+  <div class="full-screen-lottie">
+    <lottie-player 
+      src="data:application/json;base64,{}"
+      background="transparent"
+      speed="1"
+      loop
+      autoplay>
+    </lottie-player>
+  </div>
+""".format(
+    # embed your JSON as base64
+    base64.b64encode(json.dumps(lottie_bg).encode()).decode()
+), unsafe_allow_html=True)
 
-# 3) Inject it (height=0 so it doesn’t take up layout space)
-components.html(html, height=0, width=0)
+# 2) Then render your normal page title/content below
+st.title("SVM Aplikácia")
+st.markdown("Tu príde tvoj obsah úvodnej stránky...")
     
 # Define the pages
 pages = {
